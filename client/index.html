@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeServices</title>
+  <script>
+    // Shows startup errors on the page itself, so a blank screen never hides the reason
+    function showBootError(msg) {
+      var box = document.getElementById("boot-error");
+      if (!box) {
+        box = document.createElement("pre");
+        box.id = "boot-error";
+        box.style.cssText = "white-space:pre-wrap;color:#b00020;background:#fff3f3;padding:16px;margin:16px;font:14px monospace;border:1px solid #b00020";
+        document.body.appendChild(box);
+      }
+      box.textContent += msg + "\n";
+    }
+    window.addEventListener("error", function (e) {
+      if (e.target && e.target !== window && (e.target.src || e.target.href)) showBootError("Could not load: " + (e.target.src || e.target.href));
+      else showBootError("Error: " + (e.message || e.type) + (e.filename ? "  (" + e.filename + ":" + e.lineno + ")" : ""));
+    }, true);
+    window.addEventListener("unhandledrejection", function (e) {
+      showBootError("Promise error: " + ((e.reason && e.reason.message) || e.reason));
+    });
+  </script>
+</head>
+<body><div id="root"></div><script type="module" src="/src/main.jsx"></script></body>
+</html>
